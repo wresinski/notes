@@ -1256,3 +1256,21 @@ template<>
 * boost中同样使用暴力枚举的方式实现了`tuple`
 
 Tips：mete programming（元编程）是对类型进行操作而不像一般编程对变量进行操作
+
+22. 智能指针
+
+* 大多数时候使用`unique_ptr`，需要共享时再使用`shared_ptr`，循环引用时将其中一个改为`weak_ptr`
+* 传参：
+  * 函数内部只使用，不保存对象内容时
+	```cpp
+	void func(Widget*);
+	void func(const shared_ptr<Widget>&)
+	```
+  * 函数中需要保存指针时
+	```cpp
+	void func(std::shared_ptr<Widget> ptr);
+	```
+
+23. inline
+* inline在现代C++中的效果是声明一个函数为weak符号，和性能优化意义上的内联无关
+* 优化意义上的内联指把函数体直接放到调用者那里去

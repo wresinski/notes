@@ -1,0 +1,42 @@
+#+STARTUP: indent
+
+* 修饰符
+** __global__ 核函数（不可有返回值）
+** __device__ GPU函数
+** __host__ CPU函数（可以同时是__device__）
+* cudaDeviceSynchronize()同步
+* __CUDA_ARCH__
+* checkCudaErrors()检查错误代码
+* 软件层级（可以是三维）
+** grid(gridDim：grid中的block总数)
+** block(blockDim：block中线程总数，blockIdx：block号）
+** thread(threadIdx：线程号)
+* 调用语法：<<<gridDim, blockDim>>>
+* 物理层级
+** SM：上面可以跑一个及以上的block，block中共享缓存
+** SP
+* 内存管理
+** cudaMalloc/cudaFree 显存分配/释放
+** cudaMemcpy 显存/内存数据拷贝（自带同步）
+** cudaMallocManaged 统一内存技术
+* 内存分配器
+** T* allocate(size_t n)           //在显存中分配
+** void deallocate(T *p, size_t n) //释放显存
+* 核函数调用实参一定要值传递（因为指针地址空间不同）
+* vector.data()
+* 要用sinf()而不是sin()，还有低精度的__sinf()
+* thrust库
+** vector都重载了=操作符，方便在内存和显存中来回拷贝
+** 算法会根据容器类型决定在CPU上执行还是GPU上执行
+* 原子操作
+** 会返回旧值
+** atomicCAS可以实现任意原子操作
+* 内存模型
+** thread变量：寄存器（若太多会溢出到一级缓存）
+** block：__shard__ 共享显存
+** grid：所有kernel共享全局显存
+** 寄存器使用少的建议大 blockDim ，反之小blockDim
+* __syncthreads()线程内同步
+* 线程组(warp)：block内以32个线程为一组进行调度
+** warp中尽量建少分支
+
